@@ -14,8 +14,19 @@ ascii="
 | $$$$$$$/| $$$$$$$/| $$    |  $$$$$$$ /$$$$$$$/  |  $$$$/
 |_______/ |_______/ |__/     \_______/|_______/    \___/  
 "
+rainbow_ascii() {
+  while IFS= read -r line; do
+    out=""
+    for ((i=0; i<${#line}; i++)); do
+      c="${line:$i:1}"
+      color=$((RANDOM % 215 + 16))
+      out+="\e[38;5;${color}m${c}\e[0m"
+    done
+    echo -e "$out"
+  done <<< "$ascii"
+}
 
-echo -e "$(printf "%s" "$ascii" | sed $'s/./&\e[38;5;'$((RANDOM%255))'m/g')\e[0m"
+rainbow_ascii
 
 echo
 lsblk
